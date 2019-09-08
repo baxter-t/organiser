@@ -1,0 +1,62 @@
+body, html {
+	width:100%;
+	background-color: white;
+	font-family: 'Roboto', sans-serif;
+}
+
+h1, h3{
+	font-family: 'Playfair Display', serif;
+	padding-bottom: 20px;
+}
+
+.appointments p {
+	padding-left: 30px;
+
+}
+
+.todos p {
+	padding-left: 30px;
+}
+
+.jumbotron {
+	margin: 15px;
+	padding: 20px;
+	background-color: white;
+}
+
+.divider {
+	font-size: 50px;
+
+}
+
+.container {
+	margin:0;
+	padding:0;
+}
+
+.navigation {
+	padding-top: 20px;
+}
+
+.navigation a {
+	padding: 20px;
+	color: #969696;
+}
+
+.active {
+	color: black !important;
+}
+
+.menuBar {
+	height:60px;
+	width:100%;
+}
+
+.list-group {
+	margin-top: 20px;
+}
+
+.list-group a {
+	border:0;
+	padding:20px;
+}
