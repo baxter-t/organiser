@@ -20,3 +20,9 @@ request.onload = function() {
 };
 
 request.send();
+
+$(document).ready(function() {
+	var date = new Date();
+
+	$('#date').append('<h5>'+ date.toDateString() +'</h5>');
+})
