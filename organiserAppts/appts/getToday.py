@@ -1,18 +1,28 @@
-import json
 import os
+from boto3.dynamodb.conditions import Attr
+import json
+import datetime as dt
 
 from appts import decimalencoder
 import boto3
 dynamodb = boto3.resource('dynamodb')
 
 
-def list(event, context):
+def getToday(event, context):
+
+    print()
+    print(event)
+    print()
+
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
+    
+    stamp = int(event['pathParameters']['today'])
 
-    # fetch all todos from the database
-    result = table.scan()
+    # Filter for in a range - unix timestamps
+    result = table.scan(
+        FilterExpression=Attr('start').between(stamp, stamp + 86400)
+    )
 
-    # create a response
     response = {
         "statusCode": 200,
         "body": json.dumps(result['Items'], cls=decimalencoder.DecimalEncoder),
@@ -20,3 +30,6 @@ def list(event, context):
     }
 
     return response
+
+
+

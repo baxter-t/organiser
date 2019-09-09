@@ -11,7 +11,8 @@ dynamodb = boto3.resource('dynamodb')
 
 def create(event, context):
     data = json.loads(event['body'])
-    if 'text' not in data:
+    print(data)
+    if 'name' not in data:
         logging.error("Validation Failed")
         raise Exception("Couldn't create the todo item.")
     
@@ -32,7 +33,8 @@ def create(event, context):
     # create a response
     response = {
         "statusCode": 200,
-        "body": json.dumps(item)
+        "body": json.dumps(item),
+        "headers": {}
     }
 
     return response

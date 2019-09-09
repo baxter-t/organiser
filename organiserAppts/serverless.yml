@@ -1,3 +1,5 @@
+org: baxtert
+app: appointments
 service: organiserAppts
 
 frameworkVersion: ">=1.1.0 <2.0.0"
@@ -35,6 +37,15 @@ functions:
           path: appts
           method: get
           cors: true
+
+  getToday:
+    handler: appts/getToday.getToday
+    events:
+      - http:
+          path: appts/filter/{today}
+          method: get
+          cors: true
+          integration: LAMBDA
 
   get:
     handler: appts/get.get

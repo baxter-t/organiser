@@ -49,8 +49,19 @@ h1, h3{
 	color: #969696;
 }
 
+.newBtn {
+        padding: 20px;
+        padding-left: 30px;
+        color: #969696;
+	font-family: 'Roboto', sans-serif;
+}
+
+.newBtn:hover{
+        color: black;
+}
+
 .active {
-	color: black !important;
+	color: #969696 !important;
 }
 
 .menuBar {
