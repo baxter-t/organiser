@@ -14,9 +14,7 @@ def create(event, context):
     if 'text' not in data:
         logging.error("Validation Failed")
         raise Exception("Couldn't create the todo item.")
-
-    print(event)
-
+    
     timestamp = str(datetime.utcnow().timestamp())
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
@@ -27,7 +25,7 @@ def create(event, context):
         'checked': False,
         'createdAt': timestamp,
         'updatedAt': timestamp,
-        'weight': data['weight']
+        'weight': data['weight'],
     }
 
     # write the todo to the database

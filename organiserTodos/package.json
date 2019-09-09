@@ -1,5 +1,5 @@
 {
-  "name": "organiser",
+  "name": "organiserTodos",
   "version": "1.0.0",
   "description": "Serverless CRUD service exposing a REST HTTP interface",
   "author": "",

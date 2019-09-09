@@ -1,6 +1,4 @@
-org: baxtert
-app: organiser
-service: organiser
+service: organiserTodos
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
