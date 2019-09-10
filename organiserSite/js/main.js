@@ -1,6 +1,9 @@
 var requestTodos = new  XMLHttpRequest();
 
-requestTodos.open('GET', 'https://xty0xbalja.execute-api.us-east-1.amazonaws.com/dev/todos', true);
+var TODO_URL = 'https://xty0xbalja.execute-api.us-east-1.amazonaws.com/dev/todos';
+var APPT_URL = 'https://k9pu3s151h.execute-api.us-east-1.amazonaws.com/dev/appts/filter/' 
+
+requestTodos.open('GET', TODO_URL, true);
 
 requestTodos.setRequestHeader("Content-Type", "application/json");
 
@@ -11,13 +14,12 @@ requestTodos.onload = function() {
 
 	if (requestTodos.status >= 200 && requestTodos.status < 400) {
 		data.forEach(todo => {
-			console.log(todo.text)
 
 			// Package and add to the todo section
                         todos.push(new Array(todo.weight, todo.text));
 		})
 	} else {
-		console.log('error')
+		console.log('error');
 	}
 
         // Order the todos
@@ -36,10 +38,7 @@ var date = new Date();
 date.setHours(0, 0, 0, 0);
 var stamp = Math.floor(date.getTime() / 1000);
 
-console.log(stamp);
-console.log("https://k9pu3s151h.execute-api.us-east-1.amazonaws.com/dev/appts/filter/" + stamp);
-
-requestAppts.open('GET', 'https://k9pu3s151h.execute-api.us-east-1.amazonaws.com/dev/appts/filter/' + stamp, true);
+requestAppts.open('GET', APPT_URL + stamp, true);
 requestAppts.setRequestHeader("Content-Type", "application/json");
 
 requestAppts.onload = function() {
@@ -105,15 +104,19 @@ $('#newTodo').click(function() {
         alert("New todo");
         var name = prompt("Todo Name?");
         var weight = parseInt(prompt("Weight?"), 10);
+        
+        // $.post(TODO_URL, data, function(data, status) {
+        $.ajax({
+                url: TODO_URL,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                        text: name, 
+                        weight: weight
+                }),
+                dataType: 'json'
+        });
 
-        var sendTodo = new XMLHttpRequest();
-        sendTodo.open('POST', 'https://xty0xbalja.execute-api.us-east-1.amazonaws.com/dev/todos', true);
-
-        sendTodo.onload = function() {
-
-        }
-
-        sendTodo.send(JSON.stringify({'name': name, 'weight': weight}));
 
 });
 
