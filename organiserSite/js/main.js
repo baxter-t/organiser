@@ -26,7 +26,8 @@ requestTodos.onload = function() {
         todos.sort(sorter);
 
         todos.forEach(function(element) {
-                $('#todoList').append('<p>' + '[' + element[0] + '] ' + element[1] + '</p>');
+                $('#todoList').append('<p><span class="weight">[' + element[0] + ']</span>' + element[1]+ '<a href="#">-</a></p>');
+
         })
 };
 

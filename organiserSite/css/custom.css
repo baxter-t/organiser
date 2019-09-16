@@ -24,6 +24,21 @@ h1, h3{
 	padding-left: 30px;
 }
 
+.todos a {
+        padding-left:20px;
+        font-family: 'Playfair Display', serif;
+        color: #969696;
+}
+
+.todos a:hover {
+        color: black;
+}
+
+.weight {
+        font-family: 'Playflair Display', serif;
+        padding-right: 20px;
+}
+
 .jumbotron {
 	margin: 15px;
 	padding: 20px;
