@@ -16,7 +16,7 @@ requestTodos.onload = function() {
 		data.forEach(todo => {
 
 			// Package and add to the todo section
-                        todos.push(new Array(todo.weight, todo.text));
+                        todos.push(new Array(todo.weight, todo.text, todo.id));
 		})
 	} else {
 		console.log('error');
@@ -26,57 +26,57 @@ requestTodos.onload = function() {
         todos.sort(sorter);
 
         todos.forEach(function(element) {
-                $('#todoList').append('<p><span class="weight">[' + element[0] + ']</span>' + element[1]+ '<a href="#">-</a></p>');
-
-        })
+                $('#todoList').append('<p><span class="weight">[' + element[0] + ']</span>' + element[1]+ '<a class="todoDelete" id=' + element[2] + ' href="#">-</a></p>');
+        });
 };
 
 requestTodos.send();
 
-var requestAppts = new XMLHttpRequest();
 
-var date = new Date();
-date.setHours(0, 0, 0, 0);
-var stamp = Math.floor(date.getTime() / 1000);
+function outputAppointments(stamp) {
+        var requestAppts = new XMLHttpRequest();
+        
+        requestAppts.open('GET', APPT_URL + stamp, true);
+        requestAppts.setRequestHeader("Content-Type", "application/json");
 
-requestAppts.open('GET', APPT_URL + stamp, true);
-requestAppts.setRequestHeader("Content-Type", "application/json");
+        requestAppts.onload = function() {
+                var data = JSON.parse(this.response);
 
-requestAppts.onload = function() {
-        var data = JSON.parse(this.response);
+                var appts = [];
 
-        var appts = [];
+                if (requestAppts.status >= 200 && requestAppts.status < 400) {
+                        data.forEach(appt => {
 
-        if (requestAppts.status >= 200 && requestAppts.status < 400) {
-                data.forEach(appt => {
+                                var start = new Date(appt.start * 1000);
+                                var end = new Date(appt.end * 1000);
 
-                        var start = new Date(appt.start * 1000);
-                        var end = new Date(appt.end * 1000);
+                                startHour = start.getHours() < 10 ? "0" + start.getHours() : start.getHours();
+                                startMin = start.getMinutes() < 10 ? "0" + start.getMinutes() : start.getMinutes();
 
-                        startHour = start.getHours() < 10 ? "0" + start.getHours() : start.getHours();
-                        startMin = start.getMinutes() < 10 ? "0" + start.getMinutes() : start.getMinutes();
+                                endHour = end.getHours() < 10 ? "0" + end.getHours() : end.getHours();
+                                endMin = end.getMinutes() < 10 ? "0" + end.getMinutes() : end.getMinutes();
 
-                        endHour = end.getHours() < 10 ? "0" + end.getHours() : end.getHours();
-                        endMin = end.getMinutes() < 10 ? "0" + end.getMinutes() : end.getMinutes();
+                                startStr = "" + startHour + ":" + startMin;
+                                endStr = "" + endHour + ":" + endMin;
 
-                        startStr = "" + startHour + ":" + startMin;
-                        endStr = "" + endHour + ":" + endMin;
+                                appts.push(new Array(appt.name, appt.start, startStr, endStr));
+                        })
+                } else {
+                        console.log("error");
+                }
 
-                        appts.push(new Array(appt.name, appt.start, startStr, endStr));
-                })
-        } else {
-                console.log("error");
+                appts.sort()
+
+                appts.forEach(function(e) {
+                        $('#appts').append("<p class='appt'>" + e[2] + " - " + e[3] + "   " + e[0] +"</p>");
+                });
+
         }
 
-        appts.sort()
-
-        appts.forEach(function(e) {
-                $('#appts').append("<p>" + e[2] + " - " + e[3] + "   " + e[0] +"</p>");
-        });
+        requestAppts.send()
 
 }
 
-requestAppts.send()
 
 
 function isToday(date) {
@@ -99,14 +99,61 @@ $(document).ready(function() {
 	var date = new Date();
 
 	$('#date').append('<h5>'+ date.toDateString() +'</h5>');
-})
+
+        date.setHours(0, 0, 0, 0);
+        var stamp = Math.floor(date.getTime() / 1000);
+        
+        $('#dayIn').val(date.getDate());
+        $('#monthIn').val(date.getMonth());
+        $('#yearIn').val(date.getFullYear());
+
+        outputAppointments(stamp);
+});
+
+$(document).on('click', "a.todoDelete", function() {
+        if (!confirm("Are you sure?"))
+                return;
+
+
+        $.ajax({
+                url: TODO_URL + '/' + this.id,
+                type: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                        id: this.id
+                }),
+                dataType: 'json'
+        });
+
+        $(this).closest('p').remove();
+
+});
+
+$('#goToDate').click(function () {
+
+        console.log("change the date boi")
+
+        var day = parseInt($('#dayIn').val(), 10);
+        var month = parseInt($('#monthIn').val(), 10);
+        var year = parseInt($('#yearIn').val(), 10);
+
+        var date = new Date(year, month, day);
+        var stamp = Math.floor(date.getTime() / 1000);
+     
+        $('.appt').remove();
+
+        outputAppointments(stamp);
+});
+
 
 $('#newTodo').click(function() {
         alert("New todo");
         var name = prompt("Todo Name?");
         var weight = parseInt(prompt("Weight?"), 10);
+
+        if (name == null || weight == null)
+                return;
         
-        // $.post(TODO_URL, data, function(data, status) {
         $.ajax({
                 url: TODO_URL,
                 type: 'POST',
@@ -119,6 +166,7 @@ $('#newTodo').click(function() {
         });
 
 
+        $('#todoList').append('<p><span class="weight">[' + weight + ']</span>' + name+ '<a class="todoDelete"  href="#">-</a></p>');
 });
 
 $('#newAppt').click(function() {

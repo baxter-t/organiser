@@ -61,6 +61,7 @@ functions:
           path: todos/{id}
           method: delete
           cors: true
+          integration: LAMBDA
 
 resources:
   Resources:
