@@ -8,16 +8,21 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 
 
-def getToday(event, context):
+def cleanup(event, context):
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
-    
-    stamp = int(event['pathParameters']['today'])
+
+    today = dt.datetime.now()
+    today = today.replace(hour=0, minute=0, second=0)
+    stamp = today.timestamp()
 
     # Filter for in a range - unix timestamps
     result = table.scan(
         FilterExpression=Attr('start').between(stamp, stamp + 86400)
     )
+
+    for r in result['Items']:
+        print(r)
 
     response = {
         "statusCode": 200,

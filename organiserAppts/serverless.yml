@@ -30,6 +30,14 @@ functions:
           cors: true
           integration: LAMBDA
 
+  cleanup:
+    handler: appts/cleanup.cleanup
+    events:
+      - http:
+          path: appts/cleanup
+          method: delete
+          cors: true
+
   list:
     handler: appts/list.list
     events:
