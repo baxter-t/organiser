@@ -15,31 +15,6 @@ h1, h3{
 	padding-bottom: 20px;
 }
 
-.dateInput {
-        width: 60px !important;
-        border-radius: 0;
-        border-top:0;
-        border-left:0;
-        border-right:0;
-        margin:0 !important;
-}
-
-.dateSubmit button {
-        background-color: white !important;
-        color: grey !important;
-}
-
-.dateNav {
-        font-family: 'Playfair Display', serif;
-        color: #969696;
-        padding-right: 30px;
-        padding-left: 30px;
-}
-
-.dateNav: hover {
-        color: black;
-}
-
 .appointments p {
 	padding-left: 30px;
 
@@ -53,7 +28,6 @@ h1, h3{
         padding-left:20px;
         font-family: 'Playfair Display', serif;
         color: #969696;
-        float: right;
 }
 
 .todos a:hover {

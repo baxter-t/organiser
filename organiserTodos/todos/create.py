@@ -36,7 +36,7 @@ def create(event, context):
     response = {
         "statusCode": 200,
         "body": json.dumps(item),
-        "headers": {"Access-Control-Allow-Origin": "*"}
+        "headers": {"Acess-Control-Allow-Origin": "*"}
     }
 
     return response
